@@ -1,0 +1,73 @@
+import {
+  RESET_<%= upperCaseName %>,
+  UPDATE_<%= upperCaseName %>
+} from 'constants/<%= name %>';
+
+import * as <%= camelCaseName %>sActions from 'actions/<%= name %>s';
+import * as errorsActions from 'actions/errors';
+import <%= camelCaseName %> from 'providers/<%= name %>';
+
+export function reset(payload) {
+  return {
+    type: RESET_<%= upperCaseName %>,
+    payload
+  };
+}
+
+export function update(payload) {
+  return {
+    type: UPDATE_<%= upperCaseName %>,
+    payload
+  };
+}
+
+export function fetch(params) {
+  return async (dispatch) => {
+    try {
+      const response = await <%= camelCaseName %>.fetch(params);
+      const json = await response.json();
+      dispatch(reset(json));
+    } catch (e) {
+      console.log('error', e);
+      dispatch(errorsActions.push({ msg: _t('Server sync error') }));
+    }
+  };
+}
+
+export function remove(params) {
+  return async (dispatch) => {
+    dispatch(<%= camelCaseName %>sActions.removeItem({ ...params, id: params.id }));
+    try {
+      await <%= camelCaseName %>.remove(params);
+    } catch (e) {
+      console.log('error', e);
+      dispatch(errorsActions.push({ msg: _t('Server sync error') }));
+    }
+  };
+}
+
+export function save(params) {
+  return async (dispatch) => {
+    try {
+      const response = await <%= camelCaseName %>.save(params);
+      const json = await response.json();
+
+      if (response.status === 200) {
+        dispatch(update({ ...json, errors: {} }));
+        dispatch(params.id ? <%= camelCaseName %>sActions.update(json) : <%= camelCaseName %>sActions.add(json));
+        return json;
+      }
+
+      if (response.status === 422) {
+        dispatch(update({ errors: json, isFetching: false }));
+        return { errors: json }
+      }
+      return null;
+    } catch (e) {
+      console.log('error', e);
+      dispatch(errorsActions.push({ msg: _t('Server sync error') }));
+      dispatch(update({ isFetching: false }));
+      return null;
+    }
+  };
+}

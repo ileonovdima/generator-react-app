@@ -1,0 +1,6 @@
+// @flow
+
+export const RESET_<%= upperCaseName %> = 'RESET_<%= upperCaseName %>';
+export const UPDATE_<%= upperCaseName %> = 'UPDATE_<%= upperCaseName %>';
+export const ADD_<%= upperCaseName %> = 'ADD_<%= upperCaseName %>';
+export const REMOVE_ITEM_<%= upperCaseName %> = 'REMOVE_ITEM_<%= upperCaseName %>';

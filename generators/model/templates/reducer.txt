@@ -1,0 +1,26 @@
+// @flow
+
+import {
+  RESET_<%= upperCaseName %>,
+  UPDATE_<%= upperCaseName %>
+} from 'constants/<%= name%>';
+
+import type { <%= capitalizeName %>, Action } from 'types/<%= capitalizeName %>';
+
+const initialState = {
+  id: null,
+  name: '',
+  isFetching: false,
+  errors: {}
+};
+
+export default function (state: <%= capitalizeName %> = initialState, action: Action) {
+  switch (action.type) {
+    case RESET_<%= upperCaseName %>:
+      return { ...initialState, ...action.payload };
+    case UPDATE_<%= upperCaseName %>:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+}

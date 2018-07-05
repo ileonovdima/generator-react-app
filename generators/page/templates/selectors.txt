@@ -1,0 +1,10 @@
+import { createSelector } from 'reselect';
+
+const getUsersState = state => state.users;
+
+export const getSorteredUsersList = createSelector(
+  [getUsersState],
+  (list) => {
+    return list.sort((a, b) => b.sort_order - a.sort_order);
+  }
+);

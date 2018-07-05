@@ -1,0 +1,30 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames/bind';
+import styles from './styles.css';
+
+const cx = classNames.bind(styles);
+
+export default function <%= capitalizeName %>(props) {
+  const mods = cx(...props.mods) || cx('common');
+
+  return (
+    <div className={mods}>
+      {props.children}
+    </div>
+  );
+}
+
+<%= capitalizeName %>.defaultProps = {
+  mods: ['common']
+};
+
+<%= capitalizeName %>.propTypes = {
+  mods: PropTypes.array.require,
+  children: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+    PropTypes.node,
+    PropTypes.element
+  ])
+};

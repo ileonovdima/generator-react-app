@@ -1,0 +1,45 @@
+// @flow
+
+import {
+  RESET_<%= upperCaseName %>,
+  UPDATE_<%= upperCaseName %>,
+  ADD_<%= upperCaseName %>,
+  REMOVE_ITEM_<%= upperCaseName %>,
+} from 'constants/<%= name %>';
+
+import type { <%= capitalizeName %>, Action } from 'types/<%= capitalizeName %>';
+
+const initialState: <%= capitalizeName %> = [];
+
+export default function (state: <%= capitalizeName %> = initialState, action: Action) {
+  switch (action.type) {
+    case RESET_<%= upperCaseName %>: {
+      return action.payload ? [...action.payload] : [...initialState];
+    }
+    case UPDATE_<%= upperCaseName %>: {
+      const payload = action.payload;
+      const data = state.map((item) => {
+        if (item.id !== payload.id) return { ...item };
+        return { ...item, ...payload };
+      });
+      return [...data];
+    }
+    case REMOVE_ITEM_<%= upperCaseName %>: {
+      const payload = action.payload;
+      const data = state.reduce((container, item) => {
+        if (item.id !== payload.id) {
+          container.push(item);
+        }
+        return container;
+      }, []);
+      return [...data];
+    }
+    case ADD_<%= upperCaseName %>: {
+      return [action.payload, ...state];
+    }
+    default: {
+      (action: empty);
+      return state;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+// @flow
+
+import type { <%= capitalizeNameSingle %> } from './<%= capitalizeNameSingle %>';
+
+export type <%= capitalizeName %> = Array<<%= capitalizeNameSingle %>>;
+
+export type ResetAction = { type: 'RESET_<%= upperCaseName %>', payload: <%= capitalizeName %> };
+export type UpdateAction = { type: 'UPDATE_<%= upperCaseName %>', payload: <%= capitalizeNameSingle %> };
+export type AddAction = { type: 'ADD_<%= upperCaseName %>', payload: <%= capitalizeNameSingle %> };
+export type RemoveItemAction = { type: 'REMOVE_ITEM_<%= upperCaseName %>', payload: <%= capitalizeNameSingle %> };
+
+export type Action = ResetAction | UpdateAction | AddAction | RemoveItemAction;

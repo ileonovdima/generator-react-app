@@ -1,0 +1,48 @@
+import { getToken, getCookie, getBusinessId } from 'utils';
+import config from 'config';
+
+const apikey = getCookie('apikey');
+const token = getToken();
+
+function getUrl() {
+  const url = new URL(`${config.hostname}${config.api.<%= camelCaseName %>.path}`);
+  return url;
+}
+
+function getBatchUrl() {
+  return new URL(`${config.hostname}${config.api.<%= camelCaseName %>.path}/batch`);
+}
+
+function fetchData() {
+  const businessId = getBusinessId();
+  const url = getUrl();
+  return fetch(url, {
+    headers: {
+      'X-Business-Id': businessId,
+      'X-Api-Key': apikey,
+      Authorization: token,
+      'Content-type': 'application/json'
+    }
+  });
+}
+
+function save(params) {
+  const url = getBatchUrl();
+  const businessId = getBusinessId();
+  const body = JSON.stringify(params);
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'X-Business-Id': businessId,
+      'X-Api-Key': apikey,
+      Authorization: token,
+      'Content-type': 'application/json'
+    },
+    body
+  });
+}
+
+export default {
+  fetch: fetchData,
+  save
+};

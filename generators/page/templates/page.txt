@@ -1,0 +1,62 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as usersActions from 'actions/users';
+
+import Box from 'components/Box';
+import Title from 'components/Title';
+import Row from 'components/Row';
+import Col from 'components/Column';
+
+import * as selectors from './selectors';
+
+class <%= capitalizeName %>Page extends Component {
+  constructor() {
+    super();
+    this.state = {};
+  }
+
+  render() {
+    return (
+      <Box mods={['stretch', 'block']}>
+        <Box mods={['indent-bottom-2']}>
+          <Title>{_t('<%= titleName %>')}</Title>
+        </Box>
+        <Box mods={['block', 'stretch']}>
+          <Row>
+            <Col mods={['xl-9', 'sm-12', 'xs-12']}>
+              <Box mods={['content', 'block', 'stretch']}>
+                x
+              </Box>
+            </Col>
+            <Col mods={['xl-3', 'sm-12', 'xs-12']}>
+              <Box
+                mods={['content', 'block', 'stretch', 'indent-bottom-3', 'indent-top-3']}
+              >
+                x
+              </Box>
+            </Col>
+          </Row>
+        </Box>
+      </Box>
+    );
+  }
+
+  static propTypes = {
+    usersState: PropTypes.array
+  }
+}
+
+const mapStateToProps = ((state) => {
+  const users = selectors.getSorteredUsersList(state);
+  return {
+    usersState: users
+  };
+});
+
+const mapDispatchToProps = (dispatch => ({
+  usersActions: bindActionCreators(usersActions, dispatch)
+}));
+
+export default connect(mapStateToProps, mapDispatchToProps)(<%= capitalizeName %>Page);

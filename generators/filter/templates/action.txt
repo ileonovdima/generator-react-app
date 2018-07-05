@@ -1,0 +1,19 @@
+import {
+  RESET_<%= upperCaseName %>,
+  UPDATE_<%= upperCaseName %>
+} from 'constants/<%= name %>';
+
+
+export function reset(payload) {
+  return {
+    type: RESET_<%= upperCaseName %>,
+    payload
+  };
+}
+
+export function update(payload) {
+  return {
+    type: UPDATE_<%= upperCaseName %>,
+    payload
+  };
+}

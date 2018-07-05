@@ -1,0 +1,17 @@
+import {
+  RESET_<%= upperCaseName %>,
+  UPDATE_<%= upperCaseName %>
+} from 'constants/<%= name%>';
+
+const initialState = {};
+
+export default function (state = initialState, action) {
+  switch (action.type) {
+    case RESET_<%= upperCaseName %>:
+      return { ...initialState, ...action.payload };
+    case UPDATE_<%= upperCaseName %>:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+}

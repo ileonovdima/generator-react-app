@@ -1,0 +1,77 @@
+// @flow
+
+import {
+  RESET_<%= upperCaseName %>,
+  UPDATE_<%= upperCaseName %>
+} from 'constants/<%= name %>';
+
+import RestProvider from 'providers/Rest';
+import * as <%= camelCaseName %>sActions from 'actions/<%= name %>s';
+import * as errorsActions from 'actions/errors';
+import config from 'config';
+
+import type { Action, <%= capitalizeName %> } from 'types/<%= capitalizeName %>';
+import type { Dispatch, ThunkAction } from 'types/Store';
+
+const path = config.api.<%= camelCaseName %>s.path;
+const provider = new RestProvider({ path });
+
+declare var _t: (str: string) => string;
+
+export const reset = (payload: <%= capitalizeName %>): Action => ({ type: RESET_<%= upperCaseName %>, payload });
+export const update = (payload: <%= capitalizeName %>): Action => ({ type: UPDATE_<%= upperCaseName %>, payload });
+
+export const fetch = (params: <%= capitalizeName %>): ThunkAction => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const { status, data } = await provider.fetch(params);
+      if (status === 200) dispatch(reset(data));
+    } catch (e) {
+      console.error(e);
+      dispatch(errorsActions.push({ msg: _t('Server sync error') }));
+    }
+  };
+};
+
+export const remove = (params: <%= capitalizeName %>): ThunkAction => {
+  return async (dispatch: Dispatch) => {
+    dispatch(<%= camelCaseName %>sActions.removeItem({ ...params, id: params.id }));
+    try {
+      await provider.remove(params);
+    } catch (e) {
+      console.error(e);
+      dispatch(errorsActions.push({ msg: _t('Server sync error') }));
+    }
+  };
+};
+
+export const save = (params: <%= capitalizeName %>): ThunkAction => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const { status, data } = await provider.save(params);
+
+      if (status === 201) {
+        dispatch(update({ ...data, errors: {} }));
+        dispatch(<%= camelCaseName %>sActions.add(data));
+        return data;
+      }
+
+      if (status === 200) {
+        dispatch(update({ ...data, errors: {} }));
+        dispatch(<%= camelCaseName %>sActions.update(data));
+        return data;
+      }
+
+      if (status === 422) {
+        dispatch(update({ ...params, errors: data.errors, isFetching: false }));
+        return { errors: data.errors };
+      }
+      return null;
+    } catch (e) {
+      console.error(e);
+      dispatch(errorsActions.push({ msg: _t('Server sync error') }));
+      dispatch(update({ ...params, isFetching: false }));
+      return null;
+    }
+  };
+};

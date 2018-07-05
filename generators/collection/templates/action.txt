@@ -1,0 +1,60 @@
+// @flow
+
+import {
+  RESET_<%= upperCaseName %>,
+  UPDATE_<%= upperCaseName %>,
+  ADD_<%= upperCaseName %>,
+  REMOVE_ITEM_<%= upperCaseName %>
+} from 'constants/<%=name%>';
+import RestProvider from 'providers/Rest';
+import * as errorsActions from 'actions/errors';
+import config from 'config';
+
+import type { <%= capitalizeNameSingle %> } from 'types/<%= capitalizeNameSingle %>';
+import type { <%= capitalizeName %> } from 'types/<%= capitalizeName %>';
+import type { Action } from 'types/Action';
+import type { Dispatch, ThunkAction } from 'types/Store';
+
+declare var _t: (str: string) => string;
+
+const path = config.api.<%= camelCaseName %>.path;
+const provider = new RestProvider({ path });
+
+export const reset = (payload: <%= capitalizeName %>): Action => ({ type: RESET_<%= upperCaseName %>, payload });
+export const update = (payload: <%= capitalizeNameSingle %>): Action => ({ type: UPDATE_<%= upperCaseName %>, payload });
+export const add = (payload: <%= capitalizeNameSingle %>): Action => ({ type: ADD_<%= upperCaseName %>, payload });
+export const removeItem = (payload: <%= capitalizeNameSingle %>): Action => ({ type: REMOVE_ITEM_<%= upperCaseName %>, payload });
+
+export function fetch(params?: Object): ThunkAction {
+  return async (dispatch: Dispatch) => {
+    try {
+      const { status, data } = await provider.fetch(params);
+      if (status === 200) {
+        dispatch(reset(data));
+        return data;
+      }
+      return null;
+    } catch (e) {
+      console.error(e);
+      dispatch(errorsActions.push({ msg: _t('Server sync error') }));
+      return null;
+    }
+  };
+}
+
+export function save(params: Object): ThunkAction {
+  return async (dispatch: Dispatch) => {
+    try {
+      const { status, data } = await provider.save(params);
+      if (status === 200) {
+        dispatch(reset(data));
+        return data;
+      }
+    } catch (e) {
+      console.error(e);
+      dispatch(errorsActions.push({ msg: _t('Server sync error') }));
+      dispatch(update({ ...params, isFetching: false }));
+    }
+    return [];
+  };
+}

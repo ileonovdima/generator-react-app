@@ -1,0 +1,72 @@
+import {
+  RESET_<%= upperCaseName %>,
+  UPDATE_<%= upperCaseName %>,
+  ADD_<%= upperCaseName %>,
+  REMOVE_ITEM_<%= upperCaseName %>
+} from 'constants/<%=name%>';
+import * as errorsActions from 'actions/errors';
+import <%= camelCaseName %> from 'providers/<%=name%>';
+
+export function reset(payload) {
+  return {
+    type: RESET_<%= upperCaseName %>,
+    payload
+  };
+}
+
+export function update(payload) {
+  return {
+    type: UPDATE_<%= upperCaseName %>,
+    payload
+  };
+}
+
+export function add(payload) {
+  return {
+    type: ADD_<%= upperCaseName %>,
+    payload
+  };
+}
+
+export function removeItem(payload) {
+  return {
+    type: REMOVE_ITEM_<%= upperCaseName %>,
+    payload
+  };
+}
+
+export function save(params) {
+  return async (dispatch) => {
+    try {
+      const response = await <%= camelCaseName %>.save(params);
+      const json = await response.json();
+      if (response.status === 200) {
+        dispatch(reset([...json]));
+        return json;
+      }
+    } catch (e) {
+      console.log('error', e);
+      dispatch(errorsActions.push({ msg: _t('Server sync error') }));
+      dispatch(update({ isFetching: false }));
+    }
+    return [];
+  };
+}
+
+export function fetch(params) {
+  return async (dispatch) => {
+    try {
+      const response = await <%= camelCaseName %>.fetch(params);
+      const json = await response.json();
+      if (response.status === 200) {
+        dispatch(reset(json));
+        return json;
+      }
+      return null;
+    } catch (e) {
+      console.log('error', e);
+      dispatch(errorsActions.push({ msg: _t('Server sync error') }));
+      return null;
+    }
+  };
+}

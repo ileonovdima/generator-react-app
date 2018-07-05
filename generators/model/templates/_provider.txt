@@ -1,0 +1,64 @@
+import { getToken, getCookie, getBusinessId } from 'utils';
+import config from 'config';
+
+const apikey = getCookie('apikey');
+const token = getToken();
+
+function getUrl(params = {}) {
+  let url;
+  if (params.id) {
+    url = new URL(`${config.hostname}${config.api.<%= camelCaseName %>.path}/${params.id}`);
+  } else {
+    url = new URL(`${config.hostname}${config.api.<%= camelCaseName %>.path}`);
+  }
+  return url;
+}
+
+function fetchData(params) {
+  const url = getUrl(params);
+  const businessId = getBusinessId();
+  return fetch(url, {
+    headers: {
+      'X-Business-Id': businessId,
+      'X-Api-Key': apikey,
+      Authorization: token,
+      'Content-type': 'application/json'
+    }
+  });
+}
+
+function save(params) {
+  const url = getUrl(params);
+  const body = JSON.stringify(params);
+  const businessId = getBusinessId();
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'X-Business-Id': businessId,
+      'X-Api-Key': apikey,
+      Authorization: token,
+      'Content-type': 'application/json'
+    },
+    body
+  });
+}
+
+function remove(params) {
+  const url = getUrl(params);
+  const businessId = getBusinessId();
+  return fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'X-Business-Id': businessId,
+      'X-Api-Key': apikey,
+      Authorization: token,
+      'Content-Type': 'application/json'
+    }
+  });
+}
+
+export default {
+  fetch: fetchData,
+  save,
+  remove
+};

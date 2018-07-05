@@ -1,0 +1,8 @@
+@custom-media --mobile (320px <= width <= 1239px);
+@custom-media --phone  (320px <= width <= 639px);
+@custom-media --tablet (640px <= width <= 1239px);
+@custom-media --laptop (1240px <= width <= 1439px);
+
+.common {
+  display: flex;
+}
