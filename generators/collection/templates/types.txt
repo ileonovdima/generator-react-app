@@ -8,5 +8,6 @@ export type ResetAction = { type: 'RESET_<%= upperCaseName %>', payload: <%= cap
 export type UpdateAction = { type: 'UPDATE_<%= upperCaseName %>', payload: <%= capitalizeNameSingle %> };
 export type AddAction = { type: 'ADD_<%= upperCaseName %>', payload: <%= capitalizeNameSingle %> };
 export type RemoveItemAction = { type: 'REMOVE_ITEM_<%= upperCaseName %>', payload: <%= capitalizeNameSingle %> };
+export type BaseReduxAction = { type: $Subtype<string> };
 
-export type Action = ResetAction | UpdateAction | AddAction | RemoveItemAction;
+export type Action = ResetAction | UpdateAction | AddAction | RemoveItemAction | BaseReduxAction;

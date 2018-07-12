@@ -14,7 +14,7 @@ const initialState = {
   errors: {}
 };
 
-export default function (state: <%= capitalizeName %> = initialState, action: Action) {
+export default (state: <%= capitalizeName %> = initialState, action: Action) => {
   switch (action.type) {
     case RESET_<%= upperCaseName %>:
       return { ...initialState, ...action.payload };
@@ -23,4 +23,4 @@ export default function (state: <%= capitalizeName %> = initialState, action: Ac
     default:
       return state;
   }
-}
+};

@@ -3,11 +3,12 @@
 export type <%= capitalizeName %> = {|
   id: ?string,
   name: string,
-  errors: Object,
-  isFetching: boolean
+  errors?: Object,
+  isFetching?: boolean
 |};
 
 export type ResetAction = { type: 'RESET_<%= upperCaseName %>', payload: <%= capitalizeName %> };
 export type UpdateAction = { type: 'UPDATE_<%= upperCaseName %>', payload: <%= capitalizeName %> };
+export type BaseReduxAction = { type: $Subtype<string> };
 
-export type Action = ResetAction | UpdateAction;
+export type Action = ResetAction | UpdateAction | BaseReduxAction;

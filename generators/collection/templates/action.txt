@@ -13,7 +13,7 @@ import config from 'config';
 import type { <%= capitalizeNameSingle %> } from 'types/<%= capitalizeNameSingle %>';
 import type { <%= capitalizeName %> } from 'types/<%= capitalizeName %>';
 import type { Action } from 'types/Action';
-import type { Dispatch, ThunkAction } from 'types/Store';
+import type { Dispatch } from 'types/Store';
 
 declare var _t: (str: string) => string;
 
@@ -21,11 +21,11 @@ const path = config.api.<%= camelCaseName %>.path;
 const provider = new RestProvider({ path });
 
 export const reset = (payload: <%= capitalizeName %>): Action => ({ type: RESET_<%= upperCaseName %>, payload });
-export const update = (payload: <%= capitalizeNameSingle %>): Action => ({ type: UPDATE_<%= upperCaseName %>, payload });
-export const add = (payload: <%= capitalizeNameSingle %>): Action => ({ type: ADD_<%= upperCaseName %>, payload });
-export const removeItem = (payload: <%= capitalizeNameSingle %>): Action => ({ type: REMOVE_ITEM_<%= upperCaseName %>, payload });
+export const update = (payload: $Shape(<%= capitalizeNameSingle %>)): Action => ({ type: UPDATE_<%= upperCaseName %>, payload });
+export const add = (payload: $Shape(<%= capitalizeNameSingle %>)): Action => ({ type: ADD_<%= upperCaseName %>, payload });
+export const removeItem = (payload: $Shape(<%= capitalizeNameSingle %>)): Action => ({ type: REMOVE_ITEM_<%= upperCaseName %>, payload });
 
-export function fetch(params?: Object): ThunkAction {
+export function fetch(params?: Object) {
   return async (dispatch: Dispatch) => {
     try {
       const { status, data } = await provider.fetch(params);
@@ -42,7 +42,7 @@ export function fetch(params?: Object): ThunkAction {
   };
 }
 
-export function save(params: Object): ThunkAction {
+export function save(params: Object) {
   return async (dispatch: Dispatch) => {
     try {
       const { status, data } = await provider.save(params);

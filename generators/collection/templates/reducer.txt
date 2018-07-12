@@ -11,7 +11,7 @@ import type { <%= capitalizeName %>, Action } from 'types/<%= capitalizeName %>'
 
 const initialState: <%= capitalizeName %> = [];
 
-export default function (state: <%= capitalizeName %> = initialState, action: Action) {
+export default (state: <%= capitalizeName %> = initialState, action: Action) => {
   switch (action.type) {
     case RESET_<%= upperCaseName %>: {
       return action.payload ? [...action.payload] : [...initialState];
@@ -42,4 +42,4 @@ export default function (state: <%= capitalizeName %> = initialState, action: Ac
       return state;
     }
   }
-}
+};
