@@ -43,7 +43,7 @@ module.exports = class extends Generator {
 
     this.fs.copyTpl(
       this.templatePath('type.txt'),
-      this.destinationPath(`public/js/types/${params.capitalizeName}.js`),
+      this.destinationPath(`public/js/types/State/${params.capitalizeName}.js`),
       params
     );
   }

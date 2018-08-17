@@ -3,6 +3,11 @@
 export type <%= capitalizeName %> = {|
   id: ?string,
   name: string,
+  createdAt: ?string,
+  createdBy: ?string,
+  updatedAt: ?string,
+  updatedBy: ?string,
+  sortOrder: number,
   errors?: Object,
   isFetching?: boolean
 |};

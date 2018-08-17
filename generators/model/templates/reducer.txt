@@ -5,11 +5,17 @@ import {
   UPDATE_<%= upperCaseName %>
 } from 'constants/<%= name%>';
 
-import type { <%= capitalizeName %>, Action } from 'types/<%= capitalizeName %>';
+import type { <%= capitalizeName %> } from 'types/State';
+import type { Action } from 'types/Store';
 
 const initialState = {
   id: null,
   name: '',
+  createdAt: '',
+  createdBy: '',
+  updatedAt: '',
+  updatedBy: '',
+  sortOrder: 0,
   isFetching: false,
   errors: {}
 };

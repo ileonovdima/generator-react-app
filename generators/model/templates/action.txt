@@ -10,18 +10,25 @@ import * as <%= camelCaseName %>sActions from 'actions/<%= name %>s';
 import * as errorsActions from 'actions/errors';
 import config from 'config';
 
-import type { Action, <%= capitalizeName %> } from 'types/<%= capitalizeName %>';
-import type { Dispatch } from 'types/Store';
+import type { <%= capitalizeName %> } from 'types/State';
+import type { Dispatch, Action } from 'types/Store';
 
 const path = config.api.<%= camelCaseName %>s.path;
 const provider = new RestProvider({ path });
 
 declare var _t: (str: string) => string;
 
-export const reset = (payload: $Shape(<%= capitalizeName %>)): Action => ({ type: RESET_<%= upperCaseName %>, payload });
-export const update = (payload: $Shape(<%= capitalizeName %>)): Action => ({ type: UPDATE_<%= upperCaseName %>, payload });
+export const reset = (payload: $Shape<<%= capitalizeName %>>): Action => ({
+  type: RESET_<%= upperCaseName %>,
+  payload
+});
 
-export const fetch = (params: $Shape(<%= capitalizeName %>)) => {
+export const update = (payload: $Shape<<%= capitalizeName %>>): Action => ({
+  type: UPDATE_<%= upperCaseName %>,
+  payload
+});
+
+export const fetch = (params: $Shape<<%= capitalizeName %>>) => {
   return async (dispatch: Dispatch) => {
     try {
       const { status, data } = await provider.fetch(params);
@@ -33,7 +40,7 @@ export const fetch = (params: $Shape(<%= capitalizeName %>)) => {
   };
 };
 
-export const remove = (params: $Shape(<%= capitalizeName %>)) => {
+export const remove = (params: $Shape<<%= capitalizeName %>>) => {
   return async (dispatch: Dispatch) => {
     dispatch(<%= camelCaseName %>sActions.removeItem({ ...params, id: params.id }));
     try {
@@ -45,7 +52,7 @@ export const remove = (params: $Shape(<%= capitalizeName %>)) => {
   };
 };
 
-export const save = (params: $Shape(<%= capitalizeName %>)) => {
+export const save = (params: $Shape<<%= capitalizeName %>>) => {
   return async (dispatch: Dispatch) => {
     try {
       const { status, data } = await provider.save(params);

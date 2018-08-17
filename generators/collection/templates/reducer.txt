@@ -7,7 +7,8 @@ import {
   REMOVE_ITEM_<%= upperCaseName %>,
 } from 'constants/<%= name %>';
 
-import type { <%= capitalizeName %>, Action } from 'types/<%= capitalizeName %>';
+import type { <%= capitalizeName %> } from 'types/State';
+import type { Action } from 'types/Store';
 
 const initialState: <%= capitalizeName %> = [];
 
@@ -38,7 +39,6 @@ export default (state: <%= capitalizeName %> = initialState, action: Action) => 
       return [action.payload, ...state];
     }
     default: {
-      (action: empty);
       return state;
     }
   }
