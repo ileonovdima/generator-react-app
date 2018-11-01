@@ -19,6 +19,12 @@ export default (state: <%= capitalizeName %> = initialState, action: Action) => 
     }
     case UPDATE_<%= upperCaseName %>: {
       const payload = action.payload;
+      if (Array.isArray(payload)) {
+        return state.map((item) => {
+          const data = payload.find(params => params.id === item.id);
+          return data ? { ...item, ...data } : { ...item };
+        });
+      }
       const data = state.map((item) => {
         if (item.id !== payload.id) return { ...item };
         return { ...item, ...payload };
